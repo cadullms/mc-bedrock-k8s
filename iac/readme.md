@@ -1,0 +1,1 @@
+only super simple az cli script for now

@@ -1,0 +1,24 @@
+{{- if .Values.lifecycle.isInit -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: bedrock-init-pod
+  name: bedrock-init-pod
+spec:
+  containers:
+  - image: ubuntu
+    name: bedrock-init-pod
+    command: ["sleep", "100d"]
+    volumeMounts:
+    - mountPath: /data
+      name: bedrock-pvc
+      readOnly: false
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes:
+  - name: bedrock-pvc
+    persistentVolumeClaim:
+      claimName: bedrock-pvc
+{{- end -}}
