@@ -8,6 +8,7 @@ metadata:
 spec:
   containers:
   - image: itzg/minecraft-bedrock-server
+    imagePullPolicy: Always
     name: bedrock-pod
     env:
     - name: EULA
