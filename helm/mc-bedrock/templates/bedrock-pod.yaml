@@ -1,35 +1,44 @@
 {{- if not .Values.lifecycle.isInit -}}
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   labels:
-    run: bedrock-pod
-  name: bedrock-pod
+    run: bedrock-deploy
+  name: bedrock-deploy
 spec:
-  containers:
-  - image: itzg/minecraft-bedrock-server
-    imagePullPolicy: Always
-    name: bedrock-pod
-    env:
-    - name: EULA
-      value: 'TRUE'
-    - name: GAMEMODE
-      value: 'creative'
-    - name: OPS
-      value: '{{ .Values.minecraft.ops }}'
-    - name: ALLOW_LIST_USERS
-      value: '{{ .Values.minecraft.allowlist }}'
-    - name: WHITE_LIST_USERS
-      value: '{{ .Values.minecraft.allowlist }}'
-    volumeMounts:
-    - mountPath: /data
-      name: bedrock-pvc
-      readOnly: false
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-  volumes:
-  - name: bedrock-pvc
-    persistentVolumeClaim:
-      claimName: bedrock-pvc
+  replicas: 1 # may never be more than one
+  selector:
+    matchLabels:
+      run: bedrock-pod
+  template:
+    metadata:
+      labels:
+        run: bedrock-pod
+    spec:
+      containers:
+      - image: itzg/minecraft-bedrock-server
+        imagePullPolicy: Always
+        name: bedrock-pod
+        env:
+        - name: EULA
+          value: 'TRUE'
+        - name: GAMEMODE
+          value: 'creative'
+        - name: OPS
+          value: '{{ .Values.minecraft.ops }}'
+        - name: ALLOW_LIST_USERS
+          value: '{{ .Values.minecraft.allowlist }}'
+        - name: WHITE_LIST_USERS
+          value: '{{ .Values.minecraft.allowlist }}'
+        volumeMounts:
+        - mountPath: /data
+          name: bedrock-pvc
+          readOnly: false
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: bedrock-pvc
+        persistentVolumeClaim:
+          claimName: bedrock-pvc
 {{- end -}}

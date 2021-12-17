@@ -3,5 +3,5 @@ lifecycle:
 
 minecraft:
   ops: '2533274902825481' # Operators (Admins) for the server, comma separated xuids
-  allowlist: 'Nin Z8009,cadull' # Allowed users, comma separated user names
+  allowlist: 'Nin Z8009,cadull,ViviKem' # Allowed users, comma separated user names
   
